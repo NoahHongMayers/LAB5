@@ -1,3 +1,10 @@
+/**
+ * @file     Item.js
+ * @author   Noah Hong Mayers | 202430525@edu.clg.qc.ca
+ * @version  1.0
+ * @date     October 10 2026
+ * @brief    item class
+ */
 
 class Item {
     constructor(id, name, price) {
@@ -8,4 +15,4 @@ class Item {
     }
 }
 
-module.exports = Item;
+module.exports = Item;//export item class

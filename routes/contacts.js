@@ -2,8 +2,8 @@
  * @file     contacts.js
  * @author   Noah Hong Mayers | 202430525@edu.clg.qc.ca
  * @version  1.0
- * @date     September 22 2026
- * @brief    Skeleton for a Node.js application using Express framework
+ * @date     October 10 2026
+ * @brief    Contact interface
  */
 
 var express = require('express');// Import the Express framework

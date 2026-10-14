@@ -1,9 +1,9 @@
 <!--
- * @file     home.ejs
+ * @file     index.ejs
  * @author   Noah Hong Mayers | 202430525@edu.clg.qc.ca
  * @version  1.0
- * @date     September 22 2026
- * @brief    Skeleton for a Node.js application using Express framework
+ * @date     October 10 2026
+ * @brief    web interface 
  */
  -->
 
@@ -38,7 +38,7 @@
                             </thead>
 
                             <tbody>
-                                <% for (let i = 0; i < items.length; i++) { %>
+                                <% for (let i=0; i < items.length; i++) { %>
                                     <tr>
                                         <td>
                                             <%= items[i].id %>
@@ -81,7 +81,7 @@
                             Remove an Item by Name <br>
                             <input type="text" name="name">
                             <button type="submit" class="btn btn-secondary">Remove</button>
-                        </form> 
+                        </form>
 
                     </div>
 
@@ -91,6 +91,25 @@
                 <%- include('../partials/footer') %>
 
         </div>
+
+        <% if (passedError) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= passedError %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <% } %>
+
+
+
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script>
+            var socket = io();
+
+            socket.on('refresh', function () {
+                location.reload();
+            });
+        </script>
 
     </body>
 
