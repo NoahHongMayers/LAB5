@@ -15,17 +15,33 @@ const ItemList = require('../models/ItemList');
 // Create the list
 var itemList = new ItemList();
 
-// Add items
-itemList.add(new Item(1, "Clavier", 25.99));
-itemList.add(new Item(2, "Souris", 15.99));
-itemList.add(new Item(3, "Écran", 149.99));
-
-// Homepage
+//render Homepage
 router.get('/', function(req, res, next) {
     res.render('pages/index', {
-        title: 'Accueil',
-        items: itemList.tab
+        items: itemList.array,// Pass the array of items to the rendered view
     });
 });
 
+router.post('/add', function(req, res) {
+    let id = itemList.getLastItemId() + 1;
+    let name = req.body.name;
+    let price = parseFloat(req.body.price);
+
+    let item = new Item(id, name, price);
+
+    itemList.add(item);
+    res.redirect('/');
+});
+
+router.post('/removeId', function(req, res) {
+    let id = Number(req.body.id);
+    itemList.removeItemById(id);
+    res.redirect('/');
+});
+
+router.post('/removeName', function(req, res) {
+    let name = req.body.name;
+    itemList.removeItemByName(name);
+    res.redirect('/');
+});
 module.exports = router;

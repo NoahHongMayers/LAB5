@@ -1,33 +1,33 @@
 
 class ItemList {
     constructor() {
-        this.tab = [];
+        this.array = [];
     }
 
     add(item) {
-        this.tab.push(item);
+        this.array.push(item);
     }
 
     getLength() {
-        return this.tab.length;
+        return this.array.length;
     }
 
     removeItemById(id) {
-        let index = this.tab.findIndex(item => item.id == id);
+        let index = this.array.findIndex(item => item.id == id);
 
-        if (index !== -1) {
-            this.tab.splice(index, 1);
+        if (index != -1) {
+            this.array.splice(index, 1);
             return 1;
         }
 
         return 0;
     }
 
-    removeItemByName(nom) {
-        let index = this.tab.findIndex(item => item.nom === nom);
+    removeItemByName(name) {
+        let index = this.array.findIndex(item => item.name === name);
 
-        if (index !== -1) {
-            this.tab.splice(index, 1);
+        if (index != -1) {
+            this.array.splice(index, 1);
             return 1;
         }
 
@@ -35,11 +35,11 @@ class ItemList {
     }
 
     getLastItemId() {
-        if (this.tab.length === 0) {
+        if (this.array.length == 0) {
             return 0;
         }
 
-        return this.tab[this.tab.length - 1].id;
+        return this.array[this.array.length - 1].id;
     }
 }
 

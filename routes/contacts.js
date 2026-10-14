@@ -9,7 +9,7 @@
 var express = require('express');// Import the Express framework
 var router = express.Router();// Create a new router object to handle routes
 
-
+//render the contacts page
 router.get('/', function(req, res, next) {
 res.render('pages/contacts', { title: 'Contacts' });
 });

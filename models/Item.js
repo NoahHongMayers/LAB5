@@ -1,10 +1,10 @@
 
 class Item {
-    constructor(id, nom, prix) {
+    constructor(id, name, price) {
         this.id = id;
-        this.nom = nom;
-        this.prix = prix;
-        this.dateCreation = new Date().toLocaleDateString('en-US');
+        this.name = name;
+        this.price = price;
+        this.creationDate = new Date().toLocaleDateString('en-US');
     }
 }
 
