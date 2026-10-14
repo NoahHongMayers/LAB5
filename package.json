@@ -1,0 +1,25 @@
+{
+  "name": "lab5",
+  "version": "1.0.0",
+  "description": "mqtt list",
+  "homepage": "https://github.com/NoahHongMayers/LAB5#readme",
+  "bugs": {
+    "url": "https://github.com/NoahHongMayers/LAB5/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoahHongMayers/LAB5.git"
+  },
+  "license": "ISC",
+  "author": "Noah Hong Mayers",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "node": "^26.9.0",
+    "node-bin-setup": "^1.1.4"
+  },
+  "devDependencies": {}
+}
