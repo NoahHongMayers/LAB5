@@ -48,6 +48,21 @@ class ItemList {
 
         return this.array[this.array.length - 1].id;
     }
+
+    modifyItem(id, name, price) {
+        let item = this.array.find(function (item) {
+            return item.id == id;
+        }
+        );
+
+        if (item) {
+            item.name = name;
+            item.price = price;
+            return 1;
+        }
+
+        return 0;
+    }
 }
 
 module.exports = ItemList;//export itemlist class

@@ -64,6 +64,20 @@ router.post('/removeName', function (req, res) {
     }
 });
 
+router.post('/modify', function (req, res) {
+    let id = req.body.id;
+    let name = req.body.newName;
+    let price = req.body.newPrice;
+
+    let result = itemList.modifyItem(id, name, price);
+    if (result == 0) {
+        console.log("Item ID not found.");
+        res.redirect('/?errorMessage=Item name not found');
+    } else{
+        client.publish('ITEM/WEB/MODIFY',id + "\n" + name + "\n" + price);
+        res.redirect('/');
+    }
+});
 
 module.exports = router;
 module.exports.itemList = itemList;//export itemList object

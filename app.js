@@ -78,6 +78,15 @@ client.on('message', function (topic, message) {
         let name = message.toString;
         itemList.removeItemByName(name);
     }
+    else if (topic == 'ITEM/MODULE/MODIFY') {
+        message = message.toString().split('\n');
+
+        let id = Number(message[0]);
+        let name = message[1];
+        let price = parseFloat(message[2]);
+
+        itemList.modifyItem(id, name, price);
+    }
     else {
         console.log('Unknown topic: ' + topic);
     }

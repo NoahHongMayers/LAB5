@@ -30,10 +30,21 @@
                         <table class="table table-light">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Date Added</th>
-                                    <th>Item</th>
-                                    <th>Price</th>
+                                    <th>
+                                        <button type="button" class="btn btn-light" onclick="sortTable(0)"># ↕</button>
+                                    </th>
+                                    <th>
+                                        <button type="button" class="btn btn-light" onclick="sortTable(1)">Date Added
+                                            ↕</button>
+                                    </th>
+                                    <th>
+                                        <button type="button" class="btn btn-light" onclick="sortTable(2)">Item
+                                            ↕</button>
+                                    </th>
+                                    <th>
+                                        <button type="button" class="btn btn-light" onclick="sortTable(3)">Price
+                                            ↕</button>
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -57,7 +68,7 @@
                             </tbody>
                         </table>
 
-                        <h2>Add or Remove Items</h2>
+                        <h2>Manage Items</h2>
 
                         <!-- Your existing ItemList table -->
 
@@ -83,6 +94,15 @@
                             <button type="submit" class="btn btn-secondary">Remove</button>
                         </form>
 
+                        <!-- Modify by ID -->
+                        <form method="POST" action="/modify">
+                            Modify an Item by ID <br>
+                            <input type="text" name="id" placeholder="Item ID">
+                            <input type="text" name="newName" placeholder="New Item Name">
+                            <input type="number" name="newPrice" step="0.01" placeholder="New Price">
+                            <button type="submit" class="btn btn-secondary">Modify</button>
+                        </form>
+
                     </div>
 
                 </main>
@@ -101,15 +121,52 @@
 
 
 
-        <script src="/socket.io/socket.io.js"></script>
+                <script src="/socket.io/socket.io.js"></script>
 
-        <script>
-            var socket = io();
+                <script>
+                    var socket = io();
 
-            socket.on('refresh', function () {
-                location.reload();
-            });
-        </script>
+                    socket.on('refresh', function () {
+                        location.reload();
+                    });
+
+                    function sortTable(column) {
+                        let table = document.querySelector("table");
+                        let tbody = table.querySelector("tbody");
+                        let rows = Array.from(tbody.querySelectorAll("tr"));
+
+                        rows.sort(function (a, b) {
+                            let valueA = a.cells[column].textContent.trim();
+                            let valueB = b.cells[column].textContent.trim();
+
+                            // Sort ID numerically
+                            if (column == 0) {
+                                return parseFloat(valueA) - parseFloat(valueB);
+                            }
+
+                            // Sort Date chronologically
+                            if (column == 1) {
+                                return new Date(valueA) - new Date(valueB);
+                            }
+
+                            // Sort Item alphabetically
+                            if (column == 2) {
+                                return valueA.localeCompare(valueB);
+                            }
+
+                            //sort Price numerically
+                            if (column == 3) {
+                                return parseFloat(valueA) - parseFloat(valueB);
+                            }
+
+                            return 0;
+                        });
+
+                        rows.forEach(function (row) {
+                            tbody.appendChild(row);
+                        });
+                    }
+                </script>
 
     </body>
 
