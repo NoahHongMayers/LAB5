@@ -12,7 +12,7 @@ var router = express.Router();
 const Item = require('../models/Item');
 const ItemList = require('../models/ItemList');
 
-const client = require('../mqttClient');//import mqtt client object
+const { client } = require('../mqttClient'); //import mqtt client object
 
 // Create the list
 var itemList = new ItemList();
