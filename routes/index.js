@@ -28,7 +28,11 @@ router.get('/', function (req, res, next) {
 router.post('/add', function (req, res) {
     let id = itemList.getLastItemId() + 1;
     let name = req.body.name;
-    let price = parseFloat(req.body.price);
+    let price = Number(req.body.price);
+
+    if (!name || !name.trim() || !req.body.price || !Number.isFinite(price) || price < 0) { // A6 : vérification du nom et du prix
+        return res.redirect('/?errorMessage=Nom ou prix invalide');
+    }
 
     let item = new Item(id, name, price);
     let date = item.creationDate;
@@ -67,7 +71,11 @@ router.post('/removeName', function (req, res) {
 router.post('/modify', function (req, res) {
     let id = req.body.id;
     let name = req.body.newName;
-    let price = req.body.newPrice;
+    let price = Number(req.body.newPrice);
+
+    if (!req.body.newPrice || !Number.isFinite(price) || price < 0) { // A20 : vérification du prix lors de la modification
+        return res.redirect('/?errorMessage=Prix invalide');
+    }
 
     let result = itemList.modifyItem(id, name, price);
     if (result == 0) {

@@ -11,7 +11,7 @@ var router = express.Router();// Create a new router object to handle routes
 
 //render the contacts page
 router.get('/', function(req, res, next) {
-res.render('pages/contacts', { title: 'Contacts' });
+    res.render('pages/contacts', { title: 'Contacts' }); // D1 : indentation corrigée
 });
 
 module.exports = router;// Export the router object to be used in other parts of the application
