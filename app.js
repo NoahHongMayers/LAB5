@@ -75,7 +75,7 @@ client.on('message', function (topic, message) {
         itemList.removeItemById(id);
     }
     else if (topic == 'ITEM/MODULE/DELETE/NAME') {
-        let name = message.toString;
+        let name = message.toString(); // A17 : conversion du message MQTT en texte
         itemList.removeItemByName(name);
     }
     else if (topic == 'ITEM/MODULE/MODIFY') {

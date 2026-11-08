@@ -1,65 +1,181 @@
 <!--
- * @file     contacts.ejs
+ * @file     index.ejs
  * @author   Noah Hong Mayers | 202430525@edu.clg.qc.ca
  * @version  1.0
- * @date     September 22 2026
- * @brief    Skeleton for a Node.js application using Express framework
+ * @date     October 10 2026
+ * @brief    web interface 
+ */
  -->
-
-<!--
- * @file     contacts.ejs
- * @author   Noah Hong Mayers
- * @version  1.0
- * @date     September 22 2026
- * @brief    Contacts page
--->
+<!-- D1 : indentation du fichier corrigée -->
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <%- include('../partials/head') %>
 
-    <body>
-        <div class="container">
+<body>
 
-            <!-- Navigation -->
-            <%- include('../partials/header') %>
+    <div class="container">
 
-                <!-- Main content -->
-                <main class="mt-3">
+        <!-- Navigation -->
+        <%- include('../partials/header') %>
 
-                    <h1>Contacts</h1>
+        <!-- Main content -->
+        <main>
 
-                    <div class="bg-light rounded p-4">
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <td>Noah Hong Mayers</td>
-                                </tr>
-                                <tr>
-                                    <th>Email</th>
-                                    <td>noahhongmayers@gmail.com</td>
-                                </tr>
-                                <tr>
-                                    <th>Phone</th>
-                                    <td>438 988 5222</td>
-                                </tr>
-                                <tr>
-                                    <th>Address</th>
-                                    <td>A200 Rue Cousineau, H7G 3J6</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        
-                    </div>
+            <p>Welcome to The List Page</p>
 
-                </main>
+            <div class="bg-light rounded p-4">
+                <h1>Item List</h1>
 
-                <!-- Footer -->
-                <%- include('../partials/footer') %>
+                <table class="table table-light">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" class="btn btn-light" onclick="sortTable(0)"># ↕</button>
+                            </th>
+                            <th>
+                                <button type="button" class="btn btn-light" onclick="sortTable(1)">Date Added
+                                    ↕</button>
+                            </th>
+                            <th>
+                                <button type="button" class="btn btn-light" onclick="sortTable(2)">Item
+                                    ↕</button>
+                            </th>
+                            <th>
+                                <button type="button" class="btn btn-light" onclick="sortTable(3)">Price
+                                    ↕</button>
+                            </th>
+                        </tr>
+                    </thead>
 
+                    <tbody>
+                        <% for (let i=0; i < items.length; i++) { %>
+                            <tr>
+                                <td>
+                                    <%= items[i].id %>
+                                </td>
+                                <td>
+                                    <%= items[i].creationDate %>
+                                </td>
+                                <td>
+                                    <%= items[i].name %>
+                                </td>
+                                <td>
+                                    <%= items[i].price %>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+
+                <h2>Manage Items</h2>
+
+                <!-- Your existing ItemList table -->
+
+                <!-- Add item -->
+                <form method="POST" action="/add" class="mb-3">
+                    Add an Item <br>
+                    <input type="text" name="name" placeholder="Item Name" >
+                    <input type="number" name="price" step="0.01" placeholder="Price" >
+                    <button type="submit" class="btn btn-secondary">Add</button>
+                </form>
+
+                <!-- Delete by ID -->
+                <form method="POST" action="/removeId" class="mb-3">
+                    Remove an Item by ID <br>
+                    <input type="number" name="id" >
+                    <button type="submit" class="btn btn-secondary">Remove</button>
+                </form>
+
+                <!-- Delete by name -->
+                <form method="POST" action="/removeName" class="mb-3">
+                    Remove an Item by Name <br>
+                    <input type="text" name="name" >
+                    <button type="submit" class="btn btn-secondary">Remove</button>
+                </form>
+
+                <!-- Modify by ID -->
+                <form method="POST" action="/modify" class="mb-3">
+                    Modify an Item by ID <br>
+                    <input type="text" name="id" placeholder="Item ID" >
+                    <input type="text" name="newName" placeholder="New Item Name" >
+                    <input type="number" name="newPrice" step="0.01" placeholder="New Price" >
+                    <button type="submit" class="btn btn-secondary">Modify</button>
+                </form>
+
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <%- include('../partials/footer') %>
+
+    </div>
+
+    <% if (passedError) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= passedError %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-    </body>
+    <% } %>
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        var socket = io();
+
+        socket.on('refresh', function () {
+            location.reload();
+        });
+
+        let sortDirections = [true, true, true, true]; // A19 : tri dans les deux sens pour chaque colonne
+
+        function sortTable(column) {
+            let table = document.querySelector("table");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.querySelectorAll("tr"));
+
+            rows.sort(function (a, b) {
+                let valueA = a.cells[column].textContent.trim();
+                let valueB = b.cells[column].textContent.trim();
+
+                // Sort ID numerically
+                if (column == 0) {
+                    return parseFloat(valueA) - parseFloat(valueB);
+                }
+
+                // Sort Date chronologically
+                if (column == 1) {
+                    return new Date(valueA) - new Date(valueB);
+                }
+
+                // Sort Item alphabetically
+                if (column == 2) {
+                    return valueA.localeCompare(valueB);
+                }
+
+                //sort Price numerically
+                if (column == 3) {
+                    return parseFloat(valueA) - parseFloat(valueB);
+                }
+
+                return 0;
+            });
+
+            if (!sortDirections[column]) {
+                rows.reverse();
+            }
+            sortDirections[column] = !sortDirections[column];
+
+            rows.forEach(function (row) {
+                tbody.appendChild(row);
+            });
+        }
+    </script>
+
+</body>
 
 </html>
