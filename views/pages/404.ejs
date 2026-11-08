@@ -6,18 +6,21 @@
  * @brief    Skeleton for a Node.js application using Express framework
  -->
 <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>404 - Page Not Found</title>
-</head>
-
+<html lang="fr">
+<%- include('../partials/head') %>
 <body>
+    <div class="container">
+        <%- include('../partials/header') %>
 
-    <h1>404 - Page Not Found</h1>
-    <p><a href="/">Return Home</a></p>
+        <main class="mt-4">
+            <h1>Erreur 404</h1>
+            <p>La page demandée est introuvable.</p>
+            <a href="/" class="btn btn-primary">
+                Retour à l'accueil
+            </a>
+        </main>
 
+        <%- include('../partials/footer') %>
+    </div>
 </body>
-
 </html>

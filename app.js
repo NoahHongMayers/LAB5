@@ -56,6 +56,13 @@ client.on('connect', function () {
     console.log('MQTT Connected');
     client.subscribe('ITEM/MODULE/#');
 });
+client.on('error', function (err) {
+    console.error('Erreur MQTT :', err.message);
+});
+
+client.on('offline', function () {
+    console.log('MQTT hors ligne');
+});
 
 client.on('message', function (topic, message) {
     console.log(topic, message.toString());
@@ -65,6 +72,11 @@ client.on('message', function (topic, message) {
         let id = itemList.getLastItemId() + 1;
         let name = message[0];
         let price = parseFloat(message[1]);
+        if (!name || name.trim() === '' ||
+            !Number.isFinite(price) || price < 0) {
+            console.log("Erreur : message MQTT invalide");
+            return;
+        }
 
         let item = new Item(id, name, price);
         let date = item.creationDate;
@@ -75,8 +87,9 @@ client.on('message', function (topic, message) {
         itemList.removeItemById(id);
     }
     else if (topic == 'ITEM/MODULE/DELETE/NAME') {
-        let name = message.toString;
+        let name = message.toString().trim();
         itemList.removeItemByName(name);
+
     }
     else if (topic == 'ITEM/MODULE/MODIFY') {
         message = message.toString().split('\n');

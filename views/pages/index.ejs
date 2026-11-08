@@ -75,15 +75,15 @@
                         <!-- Add item -->
                         <form method="POST" action="/add">
                             Add an Item <br>
-                            <input type="text" name="name" placeholder="Item Name">
-                            <input type="number" name="price" step="0.01" placeholder="Price">
+                            <input type="text" name="name" placeholder="Item Name" required>
+                            <input type="number" name="price" min="0" step="0.01" placeholder="Price" required>
                             <button type="submit" class="btn btn-secondary">Add</button>
                         </form>
 
                         <!-- Delete by ID -->
                         <form method="POST" action="/removeId">
                             Remove an Item by ID <br>
-                            <input type="number" name="id">
+                            <input type="number" name="id" placeholder="Item ID" required>
                             <button type="submit" class="btn btn-secondary">Remove</button>
                         </form>
 
@@ -97,9 +97,9 @@
                         <!-- Modify by ID -->
                         <form method="POST" action="/modify">
                             Modify an Item by ID <br>
-                            <input type="text" name="id" placeholder="Item ID">
-                            <input type="text" name="newName" placeholder="New Item Name">
-                            <input type="number" name="newPrice" step="0.01" placeholder="New Price">
+                            <input type="number" name="id" min="1" step="1" placeholder="Item ID" required>
+                            <input type="text" name="newName" placeholder="New Item Name" required>
+                            <input type="number" name="newPrice" min="0" step="0.01" placeholder="New Price" required>
                             <button type="submit" class="btn btn-secondary">Modify</button>
                         </form>
 

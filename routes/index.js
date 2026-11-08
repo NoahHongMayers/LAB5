@@ -29,7 +29,10 @@ router.post('/add', function (req, res) {
     let id = itemList.getLastItemId() + 1;
     let name = req.body.name;
     let price = parseFloat(req.body.price);
-
+    if (!name || name.trim() === '' ||
+        !Number.isFinite(price) || price < 0) {
+        return res.redirect('/?errorMessage=Nom ou prix invalide');
+    }
     let item = new Item(id, name, price);
     let date = item.creationDate;
     itemList.add(item);
@@ -45,7 +48,7 @@ router.post('/removeId', function (req, res) {
     if (result == 0) {
         console.log("Item ID not found");
         res.redirect('/?errorMessage=Item ID not found');
-    } else{
+    } else {
         client.publish('ITEM/WEB/DELETE/ID', id.toString());
         res.redirect('/');
     }
@@ -58,7 +61,7 @@ router.post('/removeName', function (req, res) {
     if (result == 0) {
         console.log("Item name not found.");
         res.redirect('/?errorMessage=Item name not found');
-    } else{
+    } else {
         client.publish('ITEM/WEB/DELETE/NAME', name);
         res.redirect('/');
     }
@@ -69,12 +72,19 @@ router.post('/modify', function (req, res) {
     let name = req.body.newName;
     let price = req.body.newPrice;
 
+    if (!Number.isInteger(id) || id <= 0 ||
+        !name || name.trim() === '' ||
+        req.body.newPrice === '' ||
+        !Number.isFinite(price) || price < 0) {
+        return res.redirect('/?errorMessage=Modification invalide');
+    }
+
     let result = itemList.modifyItem(id, name, price);
     if (result == 0) {
         console.log("Item ID not found.");
         res.redirect('/?errorMessage=Item name not found');
-    } else{
-        client.publish('ITEM/WEB/MODIFY',id + "\n" + name + "\n" + price);
+    } else {
+        client.publish('ITEM/WEB/MODIFY', id + "\n" + name + "\n" + price);
         res.redirect('/');
     }
 });
