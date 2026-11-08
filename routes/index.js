@@ -72,13 +72,6 @@ router.post('/modify', function (req, res) {
     let name = req.body.newName;
     let price = req.body.newPrice;
 
-    if (!Number.isInteger(id) || id <= 0 ||
-        !name || name.trim() === '' ||
-        req.body.newPrice === '' ||
-        !Number.isFinite(price) || price < 0) {
-        return res.redirect('/?errorMessage=Modification invalide');
-    }
-
     let result = itemList.modifyItem(id, name, price);
     if (result == 0) {
         console.log("Item ID not found.");
